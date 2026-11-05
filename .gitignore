@@ -1,3 +1,4 @@
 .env
 vendor/
-storage/app.sqlite
+storage/invoices.sqlite
+storage/logos/
