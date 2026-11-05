@@ -5,115 +5,141 @@ declare(strict_types=1);
 $client = $client ?? [];
 $errors = $errors ?? [];
 $clientId = (int) ($client['id'] ?? 0);
+
+$inputClass = 'mt-1.5 block w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500';
+$labelClass = 'block text-sm font-semibold text-gray-700';
 ?>
-<div class="space-y-6">
-    <div class="flex flex-wrap items-center justify-between gap-3">
+<div class="mx-auto max-w-3xl space-y-6">
+    <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">Edit Client</h1>
-            <p class="mt-1 text-slate-600">Update this client's details.</p>
+            <p class="text-sm font-medium text-gray-500">Client directory</p>
+            <p class="mt-1 text-sm text-gray-600">Update this client's contact and billing information.</p>
         </div>
-        <a href="/clients" class="text-sm font-medium text-slate-600 hover:text-slate-900">Back to clients</a>
+        <a href="/clients" class="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition hover:text-gray-900">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to clients
+        </a>
     </div>
 
-    <form method="post" action="/clients/<?= e($clientId) ?>/edit" class="rounded-2xl bg-white p-6 shadow-sm">
+    <form method="post" action="/clients/<?= e($clientId) ?>/edit" class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <input type="hidden" name="<?= e($csrfFieldName) ?>" value="<?= e($csrfToken) ?>">
 
-        <div class="grid gap-5 sm:grid-cols-2">
-            <div class="sm:col-span-2">
-                <label for="name" class="block text-sm font-medium text-slate-700">Client name</label>
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value="<?= e($client['name'] ?? '') ?>"
-                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                >
-                <?php if (isset($errors['name'])): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= e($errors['name']) ?></p>
-                <?php endif; ?>
-            </div>
+        <div class="border-b border-gray-100 px-6 py-5">
+            <h2 class="text-base font-semibold text-gray-900">Contact details</h2>
+            <p class="mt-1 text-sm text-gray-500">Changes apply to future invoices and draft invoices.</p>
+        </div>
 
-            <div>
-                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value="<?= e($client['email'] ?? '') ?>"
-                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                >
-                <?php if (isset($errors['email'])): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= e($errors['email']) ?></p>
-                <?php endif; ?>
-            </div>
+        <div class="p-6">
+            <div class="grid gap-5 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                    <label for="name" class="<?= e($labelClass) ?>">Client name <span class="text-red-500">*</span></label>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        required
+                        value="<?= e($client['name'] ?? '') ?>"
+                        class="<?= e($inputClass) ?>"
+                    >
+                    <?php if (isset($errors['name'])): ?>
+                        <p class="mt-1.5 text-sm font-medium text-red-600"><?= e($errors['name']) ?></p>
+                    <?php endif; ?>
+                </div>
 
-            <div>
-                <label for="company" class="block text-sm font-medium text-slate-700">Company</label>
-                <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    value="<?= e($client['company'] ?? '') ?>"
-                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                >
-                <?php if (isset($errors['company'])): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= e($errors['company']) ?></p>
-                <?php endif; ?>
-            </div>
+                <div>
+                    <label for="email" class="<?= e($labelClass) ?>">Email</label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value="<?= e($client['email'] ?? '') ?>"
+                        class="<?= e($inputClass) ?>"
+                    >
+                    <?php if (isset($errors['email'])): ?>
+                        <p class="mt-1.5 text-sm font-medium text-red-600"><?= e($errors['email']) ?></p>
+                    <?php endif; ?>
+                </div>
 
-            <div>
-                <label for="tax_id" class="block text-sm font-medium text-slate-700">Tax ID</label>
-                <input
-                    id="tax_id"
-                    name="tax_id"
-                    type="text"
-                    value="<?= e($client['tax_id'] ?? '') ?>"
-                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                >
-                <?php if (isset($errors['tax_id'])): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= e($errors['tax_id']) ?></p>
-                <?php endif; ?>
-            </div>
+                <div>
+                    <label for="company" class="<?= e($labelClass) ?>">Company</label>
+                    <input
+                        id="company"
+                        name="company"
+                        type="text"
+                        value="<?= e($client['company'] ?? '') ?>"
+                        class="<?= e($inputClass) ?>"
+                    >
+                    <?php if (isset($errors['company'])): ?>
+                        <p class="mt-1.5 text-sm font-medium text-red-600"><?= e($errors['company']) ?></p>
+                    <?php endif; ?>
+                </div>
 
-            <div class="sm:col-span-2">
-                <label for="address" class="block text-sm font-medium text-slate-700">Address</label>
-                <textarea
-                    id="address"
-                    name="address"
-                    rows="3"
-                    class="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                ><?= e($client['address'] ?? '') ?></textarea>
+                <div class="sm:col-span-2">
+                    <label for="tax_id" class="<?= e($labelClass) ?>">Tax ID</label>
+                    <input
+                        id="tax_id"
+                        name="tax_id"
+                        type="text"
+                        value="<?= e($client['tax_id'] ?? '') ?>"
+                        class="<?= e($inputClass) ?>"
+                    >
+                    <?php if (isset($errors['tax_id'])): ?>
+                        <p class="mt-1.5 text-sm font-medium text-red-600"><?= e($errors['tax_id']) ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label for="address" class="<?= e($labelClass) ?>">Address</label>
+                    <textarea
+                        id="address"
+                        name="address"
+                        rows="4"
+                        class="<?= e($inputClass) ?> resize-y"
+                    ><?= e($client['address'] ?? '') ?></textarea>
+                </div>
             </div>
         </div>
 
-        <div class="mt-6 flex items-center justify-between gap-3">
-            <a href="/clients" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 bg-gray-50/60 px-6 py-4">
+            <a href="/clients" class="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-gray-300 hover:bg-gray-50">
                 Cancel
             </a>
             <button
                 type="submit"
-                class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+                class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
                 Save changes
             </button>
         </div>
     </form>
 
-    <form
-        method="post"
-        action="/clients/<?= e($clientId) ?>/delete"
-        onsubmit="return confirm('Delete this client? This cannot be undone.');"
-        class="rounded-2xl border border-red-200 bg-red-50 p-6"
-    >
-        <input type="hidden" name="<?= e($csrfFieldName) ?>" value="<?= e($csrfToken) ?>">
-        <h2 class="text-lg font-semibold text-red-800">Delete client</h2>
-        <p class="mt-1 text-sm text-red-700">Clients with invoices cannot be deleted.</p>
-        <button
-            type="submit"
-            class="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+    <section class="rounded-xl border border-red-200 bg-white shadow-sm">
+        <div class="border-b border-red-100 px-6 py-5">
+            <h2 class="text-base font-semibold text-red-700">Danger zone</h2>
+            <p class="mt-1 text-sm text-gray-500">Clients with invoices cannot be deleted.</p>
+        </div>
+        <form
+            method="post"
+            action="/clients/<?= e($clientId) ?>/delete"
+            onsubmit="return confirm('Delete this client? This cannot be undone.');"
+            class="flex flex-wrap items-center justify-between gap-3 px-6 py-4"
         >
-            Delete client
-        </button>
-    </form>
+            <input type="hidden" name="<?= e($csrfFieldName) ?>" value="<?= e($csrfToken) ?>">
+            <p class="text-sm text-gray-600">Remove this client from your directory.</p>
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            >
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+                Delete client
+            </button>
+        </form>
+    </section>
 </div>

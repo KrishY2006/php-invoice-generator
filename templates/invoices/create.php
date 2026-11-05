@@ -13,23 +13,36 @@ if ($items === []) {
     $items = [['description' => '', 'quantity' => '1', 'unit_price' => '']];
 }
 
-$inputClass = 'mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200';
+$inputClass = 'mt-1.5 block w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm transition placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500';
 $currency = (string) ($form['currency'] ?? 'USD');
 ?>
 <div class="space-y-6">
-    <div class="flex flex-wrap items-center justify-between gap-3">
+    <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900">New Invoice</h1>
-            <p class="mt-1 text-slate-600">Build a draft invoice with line items, discounts, and tax.</p>
+            <p class="text-sm font-medium text-gray-500">Invoice builder</p>
+            <p class="mt-1 text-sm text-gray-600">Build a draft invoice with line items, discounts, and tax.</p>
         </div>
-        <a href="/invoices" class="text-sm font-medium text-slate-600 hover:text-slate-900">Back to invoices</a>
+        <a href="/invoices" class="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 transition hover:text-gray-900">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Back to invoices
+        </a>
     </div>
 
     <?php if ($clients === []): ?>
-        <div class="rounded-2xl bg-white p-8 text-center shadow-sm">
-            <h2 class="text-lg font-semibold text-slate-900">Add a client first</h2>
-            <p class="mt-2 text-sm text-slate-500">Invoices need a client. Create one before building an invoice.</p>
-            <a href="/clients/new" class="mt-5 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700">
+        <div class="flex flex-col items-center rounded-xl border border-gray-200 bg-white px-6 py-16 text-center shadow-sm">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 ring-1 ring-inset ring-indigo-100">
+                <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM3 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 019.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                </svg>
+            </span>
+            <h2 class="mt-5 text-lg font-semibold text-gray-900">Add a client first</h2>
+            <p class="mt-2 max-w-md text-sm text-gray-500">Invoices need a client. Create one before building an invoice.</p>
+            <a href="/clients/new" class="mt-6 inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
                 Add client
             </a>
         </div>
@@ -38,20 +51,20 @@ $currency = (string) ($form['currency'] ?? 'USD');
             <input type="hidden" name="<?= e($csrfFieldName) ?>" value="<?= e($csrfToken) ?>">
 
             <?php if (isset($errors['general'])): ?>
-                <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+                <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
                     <?= e($errors['general']) ?>
                 </div>
             <?php endif; ?>
 
-            <section class="rounded-2xl bg-white p-6 shadow-sm">
-                <h2 class="text-lg font-semibold text-slate-900">Invoice details</h2>
-                <p class="mt-1 text-sm text-slate-500">
+            <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+                <h2 class="text-base font-semibold text-gray-900">Invoice details</h2>
+                <p class="mt-1 text-sm text-gray-500">
                     The invoice number is generated automatically using the <?= e((string) ($profile['invoice_prefix'] ?? 'INV')) ?> prefix.
                 </p>
 
                 <div class="mt-5 grid gap-5 sm:grid-cols-2">
                     <div class="sm:col-span-2">
-                        <label for="client_id" class="block text-sm font-medium text-slate-700">Client</label>
+                        <label for="client_id" class="block text-sm font-semibold text-gray-700">Client</label>
                         <select
                             id="client_id"
                             name="client_id"
@@ -74,7 +87,7 @@ $currency = (string) ($form['currency'] ?? 'USD');
                     </div>
 
                     <div>
-                        <label for="issue_date" class="block text-sm font-medium text-slate-700">Issue date</label>
+                        <label for="issue_date" class="block text-sm font-semibold text-gray-700">Issue date</label>
                         <input
                             id="issue_date"
                             name="issue_date"
@@ -89,7 +102,7 @@ $currency = (string) ($form['currency'] ?? 'USD');
                     </div>
 
                     <div>
-                        <label for="due_date" class="block text-sm font-medium text-slate-700">Due date</label>
+                        <label for="due_date" class="block text-sm font-semibold text-gray-700">Due date</label>
                         <input
                             id="due_date"
                             name="due_date"
@@ -104,7 +117,7 @@ $currency = (string) ($form['currency'] ?? 'USD');
                     </div>
 
                     <div>
-                        <label for="currency" class="block text-sm font-medium text-slate-700">Currency</label>
+                        <label for="currency" class="block text-sm font-semibold text-gray-700">Currency</label>
                         <input
                             id="currency"
                             name="currency"
@@ -121,23 +134,26 @@ $currency = (string) ($form['currency'] ?? 'USD');
                 </div>
             </section>
 
-            <section class="rounded-2xl bg-white p-6 shadow-sm">
+            <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
-                        <h2 class="text-lg font-semibold text-slate-900">Line items</h2>
-                        <p class="mt-1 text-sm text-slate-500">Quantities and prices accept up to two decimal places.</p>
+                        <h2 class="text-base font-semibold text-gray-900">Line items</h2>
+                        <p class="mt-1 text-sm text-gray-500">Quantities and prices accept up to two decimal places.</p>
                     </div>
                     <button
                         id="add-line-item"
                         type="button"
-                        class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                        class="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
                         Add line item
                     </button>
                 </div>
 
                 <?php if (isset($itemErrors['general'])): ?>
-                    <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+                    <div class="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
                         <?= e($itemErrors['general']) ?>
                     </div>
                 <?php endif; ?>
@@ -145,18 +161,18 @@ $currency = (string) ($form['currency'] ?? 'USD');
                 <div class="mt-5 overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
-                            <tr class="border-b border-slate-200">
-                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Description</th>
-                                <th class="w-32 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Qty</th>
-                                <th class="w-40 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">Unit price</th>
-                                <th class="w-32 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">Line total</th>
+                            <tr class="border-b border-gray-200">
+                                <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Description</th>
+                                <th class="w-32 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Qty</th>
+                                <th class="w-40 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Unit price</th>
+                                <th class="w-32 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Line total</th>
                                 <th class="w-24 px-4 py-3"></th>
                             </tr>
                         </thead>
-                        <tbody id="line-items" class="divide-y divide-slate-100">
+                        <tbody id="line-items" class="divide-y divide-gray-100">
                             <?php foreach ($items as $index => $item): ?>
                                 <?php $rowErrors = $itemErrors[$index] ?? []; ?>
-                                <tr data-item-row>
+                                <tr data-item-row class="transition-colors hover:bg-gray-50/70">
                                     <td class="px-4 py-3 align-top">
                                         <input
                                             type="text"
@@ -203,13 +219,13 @@ $currency = (string) ($form['currency'] ?? 'USD');
                                         <?php endif; ?>
                                     </td>
                                     <td class="px-4 py-3 text-right align-top">
-                                        <span data-line-total class="text-sm font-medium text-slate-700">0.00</span>
+                                        <span data-line-total class="text-sm font-medium text-gray-700">0.00</span>
                                     </td>
                                     <td class="px-4 py-3 text-right align-top">
                                         <button
                                             type="button"
                                             data-remove-item
-                                            class="text-sm font-medium text-red-600 hover:text-red-800"
+                                            class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700"
                                         >
                                             Remove
                                         </button>
@@ -221,10 +237,10 @@ $currency = (string) ($form['currency'] ?? 'USD');
                 </div>
             </section>
 
-            <section class="rounded-2xl bg-white p-6 shadow-sm">
+            <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
                 <div class="grid gap-6 lg:grid-cols-2">
                     <div>
-                        <label for="notes" class="block text-sm font-medium text-slate-700">Notes</label>
+                        <label for="notes" class="block text-sm font-semibold text-gray-700">Notes</label>
                         <textarea
                             id="notes"
                             name="notes"
@@ -235,7 +251,7 @@ $currency = (string) ($form['currency'] ?? 'USD');
 
                         <div class="mt-5 grid gap-5 sm:grid-cols-2">
                             <div>
-                                <label for="discount" class="block text-sm font-medium text-slate-700">Discount (%)</label>
+                                <label for="discount" class="block text-sm font-semibold text-gray-700">Discount (%)</label>
                                 <input
                                     id="discount"
                                     name="discount"
@@ -252,7 +268,7 @@ $currency = (string) ($form['currency'] ?? 'USD');
                             </div>
 
                             <div>
-                                <label for="tax-rate" class="block text-sm font-medium text-slate-700">Tax rate (%)</label>
+                                <label for="tax-rate" class="block text-sm font-semibold text-gray-700">Tax rate (%)</label>
                                 <input
                                     id="tax-rate"
                                     name="tax_rate"
@@ -270,46 +286,51 @@ $currency = (string) ($form['currency'] ?? 'USD');
                         </div>
                     </div>
 
-                    <div class="rounded-xl bg-slate-50 p-5">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Summary</h3>
+                    <div class="rounded-xl border border-gray-100 bg-gray-50 p-5">
+                        <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">Summary</h3>
                         <dl class="mt-4 space-y-3 text-sm">
                             <div class="flex items-center justify-between gap-3">
-                                <dt class="text-slate-600">Subtotal</dt>
-                                <dd id="summary-subtotal" class="font-medium text-slate-900">USD 0.00</dd>
+                                <dt class="text-gray-600">Subtotal</dt>
+                                <dd id="summary-subtotal" class="font-medium text-gray-900">USD 0.00</dd>
                             </div>
                             <div class="flex items-center justify-between gap-3">
-                                <dt class="text-slate-600">Discount</dt>
-                                <dd id="summary-discount" class="font-medium text-slate-900">USD 0.00</dd>
+                                <dt class="text-gray-600">Discount</dt>
+                                <dd id="summary-discount" class="font-medium text-gray-900">USD 0.00</dd>
                             </div>
                             <div class="flex items-center justify-between gap-3">
-                                <dt class="text-slate-600">Tax</dt>
-                                <dd id="summary-tax" class="font-medium text-slate-900">USD 0.00</dd>
+                                <dt class="text-gray-600">Tax</dt>
+                                <dd id="summary-tax" class="font-medium text-gray-900">USD 0.00</dd>
                             </div>
-                            <div class="flex items-center justify-between gap-3 border-t border-slate-200 pt-3">
-                                <dt class="text-base font-semibold text-slate-900">Total</dt>
-                                <dd id="summary-total" class="text-base font-bold text-slate-900">USD 0.00</dd>
+                            <div class="flex items-center justify-between gap-3 border-t border-gray-200 pt-3">
+                                <dt class="text-base font-semibold text-gray-900">Total</dt>
+                                <dd id="summary-total" class="text-base font-bold text-gray-900">USD 0.00</dd>
                             </div>
                         </dl>
-                        <p class="mt-4 text-xs text-slate-500">Final totals are recalculated on the server when you save.</p>
+                        <p class="mt-4 text-xs text-gray-500">Final totals are recalculated on the server when you save.</p>
                     </div>
                 </div>
             </section>
 
-            <div class="flex items-center justify-end gap-3">
-                <a href="/invoices" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
-                    Cancel
-                </a>
-                <button
-                    type="submit"
-                    class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
-                >
-                    Save draft invoice
-                </button>
+            <div class="sticky bottom-0 z-20 -mx-4 border-t border-gray-200 bg-white/95 px-4 py-3 shadow-[0_-1px_3px_rgba(0,0,0,0.05)] backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                <div class="flex flex-wrap items-center justify-end gap-3">
+                    <a href="/invoices" class="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-gray-300 hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button
+                        type="submit"
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    >
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        Save draft invoice
+                    </button>
+                </div>
             </div>
         </form>
 
         <template id="line-item-template">
-            <tr data-item-row>
+            <tr data-item-row class="transition-colors hover:bg-gray-50/70">
                 <td class="px-4 py-3 align-top">
                     <input
                         type="text"
@@ -342,13 +363,13 @@ $currency = (string) ($form['currency'] ?? 'USD');
                     >
                 </td>
                 <td class="px-4 py-3 text-right align-top">
-                    <span data-line-total class="text-sm font-medium text-slate-700">0.00</span>
+                    <span data-line-total class="text-sm font-medium text-gray-700">0.00</span>
                 </td>
                 <td class="px-4 py-3 text-right align-top">
                     <button
                         type="button"
                         data-remove-item
-                        class="text-sm font-medium text-red-600 hover:text-red-800"
+                        class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700"
                     >
                         Remove
                     </button>
